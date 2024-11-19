@@ -108,3 +108,4 @@ The results are saved as `.png` images in the `denoising_images/` folder.
 - **Denoising Process Stability**: The denoising process can sometimes be unstable at very high or low timesteps. This is managed by adjusting the diffusion parameters (`betas` and `alphas`).
 
 # Portfolio
+# eecs398portfolio
