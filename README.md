@@ -127,4 +127,85 @@ While the baseline model provides a solid starting point, it has the following l
 ### Next Steps
 To improve the model, additional features such as kill counts, deaths, and team objectives could be incorporated. Additionally, experimenting with more complex models and feature selection techniques could enhance performance further.
 
+
+### Step 5
+### **Graph Analysis and Descriptions**
+
+#### **Graph 1: Baseline Feature Importance**
+- **Description**: The baseline feature importance graph shows the contribution of `golddiffat25` and `xpdiffat25` to the baseline model. Both features hold similar importance, with no additional interactions or engineered features. This reflects a straightforward approach to prediction based solely on gold and experience differences at 25 minutes.
+- **Significance**: The reliance on raw features may limit the model's ability to capture complex relationships in the data, leading to moderate accuracy but lacking nuance.
+
+---
+
+#### **Graph 2: Final Feature Importance**
+- **Description**: The final model's feature importance graph highlights the introduction of two additional features: `gold_xp_interaction` and `kills_deaths_ratio`. These features were derived from domain-specific insights.
+  - **`gold_xp_interaction`**: Captures the combined influence of gold and experience, assuming these variables interact to affect match outcomes.
+  - **`kills_deaths_ratio`**: Reflects the team's efficiency in securing kills versus their deaths, which often indicates strategic advantage.
+- **Significance**: These new features improve the model's interpretability and predictive power by incorporating interactions and game-specific dynamics, leading to better generalization.
+
+---
+
+#### **Graph 3: Accuracy Comparison**
+- **Description**: The bar chart compares the accuracy of the baseline model (0.76) to the final model (0.71). While accuracy slightly decreased, the final model provides richer insights through feature engineering and better class-specific metrics, as evidenced by the next graph.
+- **Significance**: Accuracy alone may not capture improvements in recall or precision for specific classes, which are critical in applications where class imbalance exists.
+
+---
+
+#### **Graph 4: Comparison of Metrics by Class**
+- **Description**: This graph compares precision, recall, and F1-scores for Class 0 (Loss) and Class 1 (Win) between the baseline and final models:
+  - **Class 0**: Precision remained stable, but recall decreased slightly, affecting the F1-score.
+  - **Class 1**: Recall significantly improved, with a marginal increase in precision and F1-score.
+- **Significance**: Improvements in recall for Class 1 suggest the final model is better at identifying wins, which could be prioritized depending on the use case.
+
+---
+
+#### **Graph 5: Confusion Matrices**
+- **Description**: Confusion matrices compare the baseline and final models:
+  - **Baseline Model**: More balanced predictions but with higher false positives and false negatives.
+  - **Final Model**: Reduced false negatives for Class 1 but slightly increased false positives for Class 0.
+- **Significance**: The final model demonstrates a shift in focus toward correctly identifying wins (Class 1), which aligns with the goal of improving recall for that class.
+
+---
+
+#### **Graph 6: ROC Curve Comparison**
+- **Description**: The ROC curve shows the True Positive Rate (TPR) versus False Positive Rate (FPR) for both models:
+  - **Baseline Model**: AUC = 0.76.
+  - **Final Model**: AUC = 0.80.
+- **Significance**: The increased AUC demonstrates better discrimination ability in the final model, capturing more nuanced relationships between features and outcomes.
+
+---
+
+### **Feature Engineering and Selection**
+- **Added Features**:
+  1. **`gold_xp_interaction`**: Accounts for the synergy between gold and experience, hypothesizing that their combined effect influences match outcomes.
+  2. **`kills_deaths_ratio`**: Highlights the team's efficiency in securing kills versus their deaths, a critical metric in competitive matches.
+- **Reasoning**: These features were derived from the game's mechanics, emphasizing interactions and strategic dynamics that were not captured by raw gold and experience differences.
+
+---
+
+### **Modeling Algorithm and Hyperparameter Tuning**
+- **Algorithm**: The final model used a `RandomForestClassifier`, chosen for its ability to handle non-linear relationships and feature interactions.
+- **Hyperparameters**:
+  - `max_depth = 5`: Limits tree depth to prevent overfitting.
+  - `min_samples_split = 10`: Ensures splits occur only with sufficient data points.
+  - `n_estimators = 200`: Balances computational cost and predictive power.
+- **Tuning Method**: Performed using `GridSearchCV`, evaluating hyperparameter combinations with cross-validation for robust performance estimates.
+
+---
+
+### **Performance Comparison**
+- **Baseline Model**:
+  - Accuracy: 0.76.
+  - AUC: 0.76.
+  - F1-Score (Class 1): Moderate.
+- **Final Model**:
+  - Accuracy: 0.71.
+  - AUC: 0.80.
+  - F1-Score (Class 1): Higher, indicating better focus on predicting wins.
+- **Improvement**: Despite a slight dip in overall accuracy, the final model exhibits better performance in recall, precision, and AUC, particularly for Class 1. This reflects a more targeted approach to the prediction task.
+
+---
+
+Let me know if further clarifications are needed!
+
 '''
