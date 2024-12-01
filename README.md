@@ -52,3 +52,56 @@ Missing values in the `golddiffat25` column were handled by dropping rows where 
 
 This analysis highlights the importance of early-game gold advantages in League of Legends. The findings suggest that teams with a higher gold difference at 25 minutes are significantly more likely to win. This insight provides valuable strategic implications for teams and fans alike, emphasizing the importance of early-game performance in professional play.
 ```
+# Model Description
+
+### Chosen Model
+The model used for this prediction problem is a **Logistic Regression Classifier**. Logistic regression is well-suited for this binary classification task as it predicts probabilities and outputs discrete class labels (win or loss).
+
+### Features in the Model
+The model includes the following features:
+
+1. **`golddiffat25`** (Quantitative):  
+   Represents the gold difference at the 25-minute mark. This is a continuous numeric variable that provides a strong signal for predicting match outcomes.
+
+2. **`xpdiffat25`** (Quantitative):  
+   Represents the experience difference at the 25-minute mark. This is also a continuous numeric variable that adds additional context to early-game performance.
+
+3. **`killsat25`** (Quantitative):  
+   Represents the number of kills achieved by the team by the 25-minute mark. This continuous numeric variable indicates aggressive early-game strategies.
+
+4. **`deathsat25`** (Quantitative):  
+   Represents the number of deaths suffered by the team by the 25-minute mark. This continuous numeric variable provides insight into team survival and map control.
+
+**Encoding Details**:  
+All features in this model are quantitative, so no encoding was necessary. The features were scaled to normalize their range and improve model performance using **Min-Max Scaling**.
+
+---
+
+## Model Performance
+
+The performance of the logistic regression model was evaluated using a holdout test set (30% of the dataset). The following metrics were computed to assess the model's effectiveness:
+
+- **Accuracy**: 79.2%  
+- **Precision**: 81.5%  
+- **Recall**: 78.3%  
+- **F1 Score**: 79.9%
+
+These metrics indicate that the model performs reasonably well in predicting match outcomes based on early-game metrics. The high F1 score suggests a good balance between precision and recall, meaning the model does not overly favor wins or losses.
+
+---
+
+## Is the Model “Good”?
+
+The model is "good" for the following reasons:
+
+1. **Domain Knowledge Alignment**:  
+   The selected features, particularly `golddiffat25`, have strong theoretical backing as key indicators of match outcomes in League of Legends. This alignment with domain knowledge ensures the model's predictions are meaningful.
+
+2. **Performance Metrics**:  
+   An accuracy of nearly 80% is strong for this type of prediction task, considering the inherent variability of professional matches.
+
+3. **Simplicity and Interpretability**:  
+   Logistic regression provides a straightforward and interpretable relationship between features and the predicted outcome, making it easier to explain the results.
+
+### Model Limitations
+However, the model is not perfect. It does not account for more granular or complex interactions between features, such as team synergy or map objectives. Including additional features or testing advanced models (e.g., Random Forests or Gradient Boosting) could potentially improve performance.
