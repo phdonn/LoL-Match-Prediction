@@ -52,7 +52,35 @@ Missing values in the `golddiffat25` column were handled by dropping rows where 
 
 This analysis highlights the importance of early-game gold advantages in League of Legends. The findings suggest that teams with a higher gold difference at 25 minutes are significantly more likely to win. This insight provides valuable strategic implications for teams and fans alike, emphasizing the importance of early-game performance in professional play.
 
-## Model Description
+
+## Step 3: Framing a Prediction Problem
+# Prediction Problem
+
+### Problem Statement
+The prediction problem involves determining whether a team will win (`result = 1`) or lose (`result = 0`) a League of Legends match based on in-game metrics available at the 25-minute mark. This is a **binary classification problem**, as the response variable (`result`) has two possible outcomes: win or loss. 
+
+### Response Variable
+The response variable is `result`, which indicates whether a team won (`1`) or lost (`0`) the match. This variable was chosen because it represents the ultimate outcome of the game, and understanding how early-game metrics impact this outcome can provide valuable insights for strategy development.
+
+### Features
+The features used to train the model include:
+1. **`golddiffat25`**: Gold difference at the 25-minute mark (quantitative).  
+2. **`xpdiffat25`**: Experience difference at the 25-minute mark (quantitative).  
+3. **`killsat25`**: Number of kills achieved by the team at the 25-minute mark (quantitative).  
+4. **`deathsat25`**: Number of deaths suffered by the team at the 25-minute mark (quantitative).  
+
+These features were chosen because they represent in-game performance metrics available at the time of prediction. They are critical indicators of early-game dominance, which strongly influences match outcomes.
+
+### Metric for Model Evaluation
+The primary metric used to evaluate the model is the **F1-score**, which balances precision and recall. This metric was chosen over accuracy because of the potential imbalance in the dataset, where some outcomes (e.g., wins or losses) may occur more frequently than others. The F1-score ensures that the model performs well in predicting both classes without favoring the majority class.
+
+### Justification for Features
+All features included in the model are based on information available at the 25-minute mark, ensuring they are valid for prediction. This aligns with the temporal constraints of the problem, as only data up to 25 minutes into the game is used to predict the outcome. Metrics that would only be available after the match ends (e.g., final kills or gold totals) were excluded to avoid data leakage.
+
+### Why This Problem Matters
+This prediction problem provides actionable insights into the importance of early-game performance in competitive League of Legends. By predicting match outcomes based on early-game metrics, teams can identify critical areas to improve their strategies and optimize their chances of success.
+
+## Step 4: Model Description
 
 ### Chosen Model
 The model used for this prediction problem is a **Logistic Regression Classifier**. Logistic regression is well-suited for this binary classification task as it predicts probabilities and outputs discrete class labels (win or loss).
