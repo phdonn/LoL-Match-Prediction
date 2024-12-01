@@ -80,58 +80,51 @@ All features included in the model are based on information available at the 25-
 ### Why This Problem Matters
 This prediction problem provides actionable insights into the importance of early-game performance in competitive League of Legends. By predicting match outcomes based on early-game metrics, teams can identify critical areas to improve their strategies and optimize their chances of success.
 
-## Step 4: Model Description
+# Baseline Model Description
 
-### Chosen Model
-The model used for this prediction problem is a **Logistic Regression Classifier**. Logistic regression is well-suited for this binary classification task as it predicts probabilities and outputs discrete class labels (win or loss).
+### Model Description
+The baseline model used is a **Logistic Regression Classifier** implemented within a scikit-learn `Pipeline`. Logistic regression is well-suited for this binary classification task as it predicts the probability of a team winning (`result = 1`) or losing (`result = 0`). The pipeline ensures all preprocessing steps, such as feature scaling, are integrated seamlessly with model training.
 
 ### Features in the Model
-The model includes the following features:
+The model uses the following features:
 
 1. **`golddiffat25`** (Quantitative):  
-   Represents the gold difference at the 25-minute mark. This is a continuous numeric variable that provides a strong signal for predicting match outcomes.
+   This feature represents the gold difference at the 25-minute mark, providing a measure of the team’s economic advantage or disadvantage during the early to mid-game phase.
 
 2. **`xpdiffat25`** (Quantitative):  
-   Represents the experience difference at the 25-minute mark. This is also a continuous numeric variable that adds additional context to early-game performance.
+   This feature represents the experience difference at the 25-minute mark, giving insight into the team’s relative level advantage or deficit compared to their opponent.
 
-3. **`killsat25`** (Quantitative):  
-   Represents the number of kills achieved by the team by the 25-minute mark. This continuous numeric variable indicates aggressive early-game strategies.
+Both features are quantitative and continuous. Since there were no ordinal or nominal features, encoding was not required. The features were scaled using **StandardScaler** within the pipeline to normalize their ranges and ensure improved logistic regression performance.
 
-4. **`deathsat25`** (Quantitative):  
-   Represents the number of deaths suffered by the team by the 25-minute mark. This continuous numeric variable provides insight into team survival and map control.
+### Model Performance
+The model was evaluated on a test set comprising 30% of the dataset to assess its generalization capability. The following metrics were observed:
 
-**Encoding Details**:  
-All features in this model are quantitative, so no encoding was necessary. The features were scaled to normalize their range and improve model performance using **Min-Max Scaling**.
+- **Accuracy**: 75.56%  
+- **Precision**: 76% (Class 0), 75% (Class 1)  
+- **Recall**: 75% (Class 0), 76% (Class 1)  
+- **F1 Score**: 75% (Class 0), 76% (Class 1)  
 
----
+These results indicate that the baseline model performs reasonably well for the task, achieving a balanced performance across both classes. The F1-score, in particular, highlights that the model maintains a good balance between precision and recall.
 
-## Model Performance
+### Is the Model “Good”?
+The current baseline model is "good" as an initial attempt because:
 
-The performance of the logistic regression model was evaluated using a holdout test set (30% of the dataset). The following metrics were computed to assess the model's effectiveness:
+1. **Domain Relevance**:  
+   The selected features, `golddiffat25` and `xpdiffat25`, are well-aligned with domain knowledge in League of Legends. These metrics are critical indicators of early-game dominance and are readily available at the 25-minute mark.
 
-- **Accuracy**: 79.2%  
-- **Precision**: 81.5%  
-- **Recall**: 78.3%  
-- **F1 Score**: 79.9%
-
-These metrics indicate that the model performs reasonably well in predicting match outcomes based on early-game metrics. The high F1 score suggests a good balance between precision and recall, meaning the model does not overly favor wins or losses.
-
----
-
-## Is the Model “Good”?
-
-The model is "good" for the following reasons:
-
-1. **Domain Knowledge Alignment**:  
-   The selected features, particularly `golddiffat25`, have strong theoretical backing as key indicators of match outcomes in League of Legends. This alignment with domain knowledge ensures the model's predictions are meaningful.
-
-2. **Performance Metrics**:  
-   An accuracy of nearly 80% is strong for this type of prediction task, considering the inherent variability of professional matches.
+2. **Balanced Performance**:  
+   The model performs consistently across both classes, as seen from the similar F1-scores for wins and losses. The accuracy of 75.56% is also a strong starting point for a baseline model.
 
 3. **Simplicity and Interpretability**:  
-   Logistic regression provides a straightforward and interpretable relationship between features and the predicted outcome, making it easier to explain the results.
+   Logistic regression provides clear and interpretable results, making it easier to understand the impact of features on match outcomes.
 
 ### Model Limitations
-However, the model is not perfect. It does not account for more granular or complex interactions between features, such as team synergy or map objectives. Including additional features or testing advanced models (e.g., Random Forests or Gradient Boosting) could potentially improve performance.
+While the baseline model provides a solid starting point, it has the following limitations:
+- It does not account for complex interactions or nonlinear relationships between features.
+- It uses only two features, which may oversimplify the problem. Adding more features (e.g., kills, deaths, or map objectives) could improve predictive performance.
+- Logistic regression may not capture the full complexity of match dynamics, so exploring more advanced models, such as Random Forests or Gradient Boosting, is a logical next step.
+
+### Next Steps
+To improve the model, additional features such as kill counts, deaths, and team objectives could be incorporated. Additionally, experimenting with more complex models and feature selection techniques could enhance performance further.
 
 '''
