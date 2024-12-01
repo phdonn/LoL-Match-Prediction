@@ -44,6 +44,14 @@ The dataset was grouped by match outcome (`result`), and the mean gold differenc
 1       1   1511.962828
 ```
 
+### Gold Difference Distribution
+<iframe
+  src="assets/gold_difference_histogram.html"
+  width="800"
+  height="600"
+  frameborder="0">
+</iframe>
+
 ## Missing Value Handling
 
 Missing values in the `golddiffat25` column were handled by dropping rows where this column was `NaN`. This approach ensured that only complete and accurate data points were used in the analysis. Imputation was not performed because the gold difference is a key feature, and approximating its values could have introduced bias into the results.
