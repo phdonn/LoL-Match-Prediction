@@ -51,8 +51,8 @@ Missing values in the `golddiffat25` column were handled by dropping rows where 
 ## Conclusion
 
 This analysis highlights the importance of early-game gold advantages in League of Legends. The findings suggest that teams with a higher gold difference at 25 minutes are significantly more likely to win. This insight provides valuable strategic implications for teams and fans alike, emphasizing the importance of early-game performance in professional play.
-```
-# Model Description
+
+## Model Description
 
 ### Chosen Model
 The model used for this prediction problem is a **Logistic Regression Classifier**. Logistic regression is well-suited for this binary classification task as it predicts probabilities and outputs discrete class labels (win or loss).
@@ -105,3 +105,5 @@ The model is "good" for the following reasons:
 
 ### Model Limitations
 However, the model is not perfect. It does not account for more granular or complex interactions between features, such as team synergy or map objectives. Including additional features or testing advanced models (e.g., Random Forests or Gradient Boosting) could potentially improve performance.
+
+'''
