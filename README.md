@@ -60,6 +60,40 @@ A histogram was created to visualize the distribution of the golddiffat25 column
   frameborder="0"
 ></iframe>
 
+### Gold Difference vs Match Outcome
+
+This scatter plot visualizes the relationship between the gold difference at 25 minutes (`golddiffat25`) and the match outcome (`result`), where the outcome is represented as a binary variable:
+- `1` indicates a win,
+- `0` indicates a loss.
+
+### Insights from the Graph:
+1. **Positive Correlation Between Gold Difference and Winning**:
+   - Matches with a positive gold difference at 25 minutes (greater than 0) are overwhelmingly associated with winning outcomes (`result = 1`).
+   - This supports the idea that early gold advantages significantly improve a team's chances of securing victory.
+
+2. **Negative Gold Differences Correlate with Losses**:
+   - Teams with a negative gold difference at 25 minutes (less than 0) are more likely to lose (`result = 0`).
+   - This suggests that deficits in gold by the mid-game are difficult to recover from.
+
+3. **Distribution of Gold Differences**:
+   - Most data points are clustered near the 0 mark on the `golddiffat25` axis, reflecting that many matches remain relatively close at the 25-minute mark.
+   - However, extreme cases of gold differences (both positive and negative) are associated with their respective outcomes more definitively.
+
+4. **Implications for Competitive Play**:
+   - The analysis highlights the importance of securing a gold lead by the 25-minute mark in League of Legends matches.
+   - Teams should focus on early-game strategies such as effective farming, successful skirmishes, and objective control to achieve a gold advantage and increase their chances of winning.
+
+### Context of the Study:
+This graph aligns with the central hypothesis of our study: **Gold differences at 25 minutes play a crucial role in determining match outcomes.** By identifying this trend, we gain insights into the dynamics of professional and competitive League of Legends games, emphasizing the critical impact of mid-game performance.
+
+The scatter plot reinforces that a team's ability to secure an economic advantage early on often translates into tangible success, underscoring the significance of mid-game strategies in shaping match results. This is particularly valuable for teams aiming to refine their gameplay and for analysts studying match dynamics.
+
+<iframe
+  src="assets/gold_difference_vs_match_outcome.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 ## Conclusion
 
