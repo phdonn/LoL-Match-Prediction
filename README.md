@@ -26,7 +26,6 @@ The data cleaning process significantly impacted the analysis by removing incomp
 
 A histogram was created to visualize the distribution of the `golddiffat25` column. The gold difference at 25 minutes shows a roughly normal distribution centered around zero, with most values falling between -5,000 and 5,000. This distribution suggests that most games are balanced around the 25-minute mark, with extreme gold advantages or disadvantages being relatively rare. This finding highlights the competitive nature of League of Legends matches and suggests that small gold advantages can significantly influence outcomes.
 
-![Distribution of Gold Difference](images/distribution_plot.png)
 
 ## Bivariate Analysis
 
@@ -142,7 +141,7 @@ This graph reinforces the critical role of mid-game performance in determining m
 This analysis highlights the importance of early-game gold advantages in League of Legends. The findings suggest that teams with a higher gold difference at 25 minutes are significantly more likely to win. This insight provides valuable strategic implications for teams and fans alike, emphasizing the importance of early-game performance in professional play.
 
 
-### Framing a Prediction Problem
+# Framing a Prediction Problem
 ## Prediction Problem
 
 ## Problem Statement
