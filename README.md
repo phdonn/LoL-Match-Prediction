@@ -62,6 +62,13 @@ A histogram was created to visualize the distribution of the golddiffat25 column
 
 # Gold Difference vs Match Outcome
 
+<iframe
+  src="assets/gold_difference_vs_match_outcome.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
 This scatter plot visualizes the relationship between the gold difference at 25 minutes (`golddiffat25`) and the match outcome (`result`), where the outcome is represented as a binary variable:
 - `1` indicates a win,
 - `0` indicates a loss.
@@ -88,12 +95,47 @@ This graph aligns with the central hypothesis of our study: **Gold differences a
 
 The scatter plot reinforces that a team's ability to secure an economic advantage early on often translates into tangible success, underscoring the significance of mid-game strategies in shaping match results. This is particularly valuable for teams aiming to refine their gameplay and for analysts studying match dynamics.
 
+
+
+## Gold Difference Distribution
 <iframe
-  src="assets/gold_difference_vs_match_outcome.html"
+  src="assets/gold_difference_distribution.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
+
+This graph provides a clear comparison of the distribution of gold differences at the 25-minute mark (`golddiffat25`) for winning (`result = 1`) and losing (`result = 0`) teams in League of Legends matches. Here's an analysis of what the graph tells us:
+
+---
+
+# 1. **Gold Difference Patterns for Winners and Losers**
+   - The box for winning teams (`result = 1`) is entirely above the zero line, indicating that winners tend to have **positive gold differences** at the 25-minute mark.
+   - Conversely, the box for losing teams (`result = 0`) is centered below zero, showing that losers often have **negative or neutral gold differences**.
+
+---
+
+# 2. **Spread of Gold Differences**
+   - **Winning Teams**:
+     - The range of gold differences is tighter, with fewer outliers, suggesting that a moderate lead at 25 minutes is often sufficient to secure a win.
+   - **Losing Teams**:
+     - The range is much broader, with some teams experiencing large negative deficits, highlighting the potential for one-sided games.
+
+---
+
+# 3. **Median Gold Difference**
+   - The median for winners is significantly above zero, emphasizing that even a small gold advantage at 25 minutes tends to correlate with a win.
+   - For losers, the median is slightly below zero, suggesting that even small deficits in gold can be detrimental.
+
+---
+
+# 4. **Outliers**
+   - There are extreme cases where teams with very high or very low gold differences deviate significantly from the typical distributions. These outliers might represent games with unusual dynamics, such as snowballing leads or major comebacks.
+
+---
+
+## Implications for the Study
+This graph reinforces the critical role of mid-game performance in determining match outcomes. It shows that achieving a gold lead by the 25-minute mark is not just advantageous but often essential for victory. The tighter and more positive distribution for winners underscores that teams must focus on early-game strategies to secure a stable advantage, while the broader range for losing teams suggests the difficulty of recovering from a deficit.
 
 ## Conclusion
 
