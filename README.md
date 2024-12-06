@@ -349,6 +349,11 @@ These hyperparameters were selected using **GridSearchCV** with 3-fold cross-val
 
 While the final model didn't improve raw accuracy, its more balanced approach to prediction and reliance on interpretable game metrics suggests it may be more reliable across different game scenarios.
 
+### Conclusion:
+
+The final model builds on the baseline by incorporating features that are rooted in the mechanics of gameplay and are likely to influence match outcomes. The hyperparameter tuning process ensured a balance between model complexity and generalization. While the accuracy improvement is slight, the final model’s strength lies in its enhanced interpretability and its ability to leverage meaningful gameplay features, making it a more robust predictor of match outcomes.
+
+## **Graph 1: Baseline Feature Importance**
    <iframe
     src="assets/accuracy_comparison_2.html"
     width="800"
@@ -356,54 +361,52 @@ While the final model didn't improve raw accuracy, its more balanced approach to
     frameborder="0"
     ></iframe>
 
-
-### Conclusion:
-
-The final model builds on the baseline by incorporating features that are rooted in the mechanics of gameplay and are likely to influence match outcomes. The hyperparameter tuning process ensured a balance between model complexity and generalization. While the accuracy improvement is slight, the final model’s strength lies in its enhanced interpretability and its ability to leverage meaningful gameplay features, making it a more robust predictor of match outcomes.
-
-## **Graph 1: Baseline Feature Importance**
-<iframe
-  src="assets/feature_importance_2.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
-- **Description**: This graph shows the relative importance of each feature in predicting game outcomes. Gold difference at 25 minutes is the most influential feature (0.46), followed closely by XP difference (0.378). Kills at 25 minutes has moderate importance (0.159), while deaths at 25 minutes surprisingly shows no importance (0.000). This suggests that resource advantages (gold and XP) are more predictive of game outcomes than raw kill/death statistics.
-
-
----
-
-## **Graph 2: Final Feature Importance**
-- **Description**: The final model's feature importance graph highlights the introduction of two additional features: `gold_xp_interaction` and `kills_deaths_ratio`. These features were derived from domain-specific insights.
-  - **`gold_xp_interaction`**: Captures the combined influence of gold and experience, assuming these variables interact to affect match outcomes.
-  - **`kills_deaths_ratio`**: Reflects the team's efficiency in securing kills versus their deaths, which often indicates strategic advantage.
-- **Significance**: These new features improve the model's interpretability and predictive power by incorporating interactions and game-specific dynamics, leading to better generalization.
-
----
-
-
-## **Graph 3: Accuracy Comparison**
-<iframe
-  src="assets/feature_importance_final_2.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
 - **Description**: The graph compares model accuracies, showing the baseline model achieved 75.6% accuracy while the final model achieved 75.4% accuracy. The minimal difference (0.2%) suggests that adding additional features and complexity didn't significantly improve predictive performance. This could indicate that the simpler baseline model already captured the most important signals in the data.
 
 
 ---
 
-## **Graph 4: Comparison of Metrics by Class**
+## **Graph 2: Final Feature Importance**
+
 <iframe
+    src="assets/feature_importance_final_2.html"
+    width="800"
+    height="600"
+    frameborder="0"
+    ></iframe>
+
+
+- **Description**: Feature Importance Analysis Graph
+This graph illustrates the relative importance of each feature in the Random Forest model:
+
+
+Gold difference at 25 minutes (golddiffat25) is the most important predictor with a score of 0.46
+XP difference (xpdiffat25) follows closely with 0.378
+Kills at 25 minutes (killsat25) has modest importance at 0.159
+Deaths at 25 minutes (deathsat25) shows no predictive value at 0.000
+
+This visualization reveals that resource-based metrics (gold and XP) are significantly more important for predicting game outcomes than combat statistics. The stark contrast between kills (moderately important) and deaths (no importance) is particularly interesting and suggests that securing advantages is more predictive than avoiding setbacks.
+
+---
+
+## **Graph 4: Comparison of Metrics by Class**
+
+  <iframe
   src="assets/model_metrics_@.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-
 - **Description**: 
-This graph is similar to the first but focused on the baseline model's feature importance. The relative importance of gold and XP differences remains consistent, reinforcing that these are the most reliable predictors of game outcomes. The consistency between baseline and final models' feature importance rankings further supports that the additional complexity may not have been necessary.
+Model Performance Metrics by Class Graph
+This bar chart compares precision, recall, and F1-score across both classes (wins and losses):
+
+
+Class 0 (Losses): Shows balanced metrics with all three scores at approximately 0.76
+Class 1 (Wins): Similarly balanced with precision at 0.76 and slightly lower recall and F1-score at 0.75
+The red dashed line at 0.75 indicates a baseline performance level
+
+The consistent scores across both classes and metrics suggest that the model performs equally well at predicting both wins and losses, without significant bias toward either outcome. The proximity of all metrics to the 0.75-0.76 range indicates stable and balanced performance overall.
 
 
 ---
