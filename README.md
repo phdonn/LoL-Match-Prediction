@@ -384,7 +384,7 @@ The final model builds on the baseline by incorporating features that are rooted
 
 ## **Graph 3: Accuracy Comparison**
 <iframe
-  src="assets/feature_importance_comparison_2.html"
+  src="assets/feature_importance_final_2.html"
   width="800"
   height="600"
   frameborder="0"
@@ -396,7 +396,7 @@ The final model builds on the baseline by incorporating features that are rooted
 
 ## **Graph 4: Comparison of Metrics by Class**
 <iframe
-  src="assets/model_metric_@.html"
+  src="assets/model_metrics_@.html"
   width="800"
   height="600"
   frameborder="0"
