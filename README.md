@@ -398,7 +398,7 @@ The final model builds on the baseline by incorporating features that are rooted
 
 ## **Graph 4: Comparison of Metrics by Class**
 <iframe
-  src="assets/model_metric_2.html"
+  src="assets/model_metric_@.html"
   width="800"
   height="600"
   frameborder="0"
