@@ -30,20 +30,6 @@ A histogram was created to visualize the distribution of the `golddiffat25` colu
 
 The relationship between `golddiffat25` and `result` was analyzed using a scatter plot and a box plot. The scatter plot demonstrated a moderate positive trend, indicating that higher gold differences are generally associated with winning outcomes. The box plot showed a clear distinction in the gold difference distributions for wins and losses. Teams that win matches (`result = 1`) tend to have positive gold differences, while teams that lose (`result = 0`) tend to have negative or neutral gold differences. This analysis confirms that early-game gold leads play a critical role in determining match outcomes. Both graphs have more detailed analysis further down. 
 
-<iframe
-  src="assets/gold_difference_histogram.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
-
-<iframe
-  src="assets/gold_difference_vs_match_outcome.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
-
 ### Aggregate Statistics
 
 The dataset was grouped by match outcome (`result`), and the mean gold difference for each outcome was calculated. Teams that won their matches had an average gold lead of 1,511.96, while losing teams had an average gold deficit of -1,511.96. This significant difference reinforces the idea that gold advantage at 25 minutes is a key indicator of success in League of Legends matches.
@@ -114,7 +100,7 @@ The scatter plot reinforces that a team's ability to secure an economic advantag
   frameborder="0"
 ></iframe>
 
-This graph provides a clear comparison of the distribution of gold differences at the 25-minute mark (`golddiffat25`) for winning (`result = 1`) and losing (`result = 0`) teams in League of Legends matches. The calculated correlation between golddiffat25 (gold difference at the 25-minute mark) and result (match outcome) is 0.478. This indicates a moderate positive correlation between the two variables. Here's an analysis of what the graph tells us:
+##### This graph provides a clear comparison of the distribution of gold differences at the 25-minute mark (`golddiffat25`) for winning (`result = 1`) and losing (`result = 0`) teams in League of Legends matches. The calculated correlation between golddiffat25 (gold difference at the 25-minute mark) and result (match outcome) is 0.478. This indicates a moderate positive correlation between the two variables. Here's an analysis of what the graph tells us:
 ---
 
 #### 1. **Gold Difference Patterns for Winners and Losers**
@@ -180,14 +166,6 @@ This prediction problem provides actionable insights into the importance of earl
 
 # Model Description
 The baseline model used is a **Logistic Regression Classifier** implemented within a scikit-learn `Pipeline`. Logistic regression is well-suited for this binary classification task as it predicts the probability of a team winning (`result = 1`) or losing (`result = 0`). The pipeline ensures all preprocessing steps, such as feature scaling, are integrated seamlessly with model training.
-
-<iframe
-  src="assets/pipeline.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
-
 
 ### Baseline Model Performance:
 
@@ -307,13 +285,6 @@ deathsat25: 0.0000
 ```
 
 The baseline features (gold and XP difference) remained the most important predictors, suggesting that my engineered features may not have captured additional signal beyond what was already present in the original features. This could indicate that the raw gold and XP differences are already sufficient proxies for team advantages at 25 minutes, or that my feature engineering approach didn't effectively capture the underlying game dynamics I was targeting.
-
-<iframe
-  src="assets/feature_importance_final_2.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
 
 ### Modeling Algorithm and Hyperparameters:
 
