@@ -368,8 +368,7 @@ The final model builds on the baseline by incorporating features that are rooted
   height="600"
   frameborder="0"
 ></iframe>
-- **Description**: The baseline feature importance graph shows the contribution of `golddiffat25` and `xpdiffat25` to the baseline model. Both features hold similar importance, with no additional interactions or engineered features. This reflects a straightforward approach to prediction based solely on gold and experience differences at 25 minutes.
-- **Significance**: The reliance on raw features may limit the model's ability to capture complex relationships in the data, leading to moderate accuracy but lacking nuance.
+- **Description**: This graph shows the relative importance of each feature in predicting game outcomes. Gold difference at 25 minutes is the most influential feature (0.46), followed closely by XP difference (0.378). Kills at 25 minutes has moderate importance (0.159), while deaths at 25 minutes surprisingly shows no importance (0.000). This suggests that resource advantages (gold and XP) are more predictive of game outcomes than raw kill/death statistics.
 
 
 ---
@@ -390,8 +389,7 @@ The final model builds on the baseline by incorporating features that are rooted
   height="600"
   frameborder="0"
 ></iframe>
-- **Description**: The bar chart compares the accuracy of the baseline model (0.76) to the final model (0.71). While accuracy slightly decreased, the final model provides richer insights through feature engineering and better class-specific metrics, as evidenced by the next graph.
-- **Significance**: Accuracy alone may not capture improvements in recall or precision for specific classes, which are critical in applications where class imbalance exists.
+- **Description**: The graph compares model accuracies, showing the baseline model achieved 75.6% accuracy while the final model achieved 75.4% accuracy. The minimal difference (0.2%) suggests that adding additional features and complexity didn't significantly improve predictive performance. This could indicate that the simpler baseline model already captured the most important signals in the data.
 
 
 ---
@@ -404,10 +402,8 @@ The final model builds on the baseline by incorporating features that are rooted
   frameborder="0"
 ></iframe>
 
-- **Description**: This graph compares precision, recall, and F1-scores for Class 0 (Loss) and Class 1 (Win) between the baseline and final models:
-  - **Class 0**: Precision remained stable, but recall decreased slightly, affecting the F1-score.
-  - **Class 1**: Recall significantly improved, with a marginal increase in precision and F1-score.
-- **Significance**: Improvements in recall for Class 1 suggest the final model is better at identifying wins, which could be prioritized depending on the use case.
+- **Description**: 
+This graph is similar to the first but focused on the baseline model's feature importance. The relative importance of gold and XP differences remains consistent, reinforcing that these are the most reliable predictors of game outcomes. The consistency between baseline and final models' feature importance rankings further supports that the additional complexity may not have been necessary.
 
 
 ---
@@ -420,10 +416,15 @@ The final model builds on the baseline by incorporating features that are rooted
   frameborder="0"
 ></iframe>
 
-- **Description**: Confusion matrices compare the baseline and final models:
-  - **Baseline Model**: More balanced predictions but with higher false positives and false negatives.
-  - **Final Model**: Reduced false negatives for Class 1 but slightly increased false positives for Class 0.
-- **Significance**: The final model demonstrates a shift in focus toward correctly identifying wins (Class 1), which aligns with the goal of improving recall for that class.
+- **Description**:Confusion Matrix
+The matrix shows prediction outcomes with:
+
+
+True Negatives (Losses correctly predicted): 10,550
+False Positives: 3,332
+False Negatives: 3,472
+True Positives (Wins correctly predicted): 10,410
+This balanced distribution suggests the model performs similarly well for both winning and losing predictions, without significant bias toward either outcome.
 
 ---
 
@@ -435,71 +436,58 @@ The final model builds on the baseline by incorporating features that are rooted
   height="600"
   frameborder="0"
 ></iframe>
-- **Description**: The ROC curve shows the True Positive Rate (TPR) versus False Positive Rate (FPR) for both models:
-  - **Baseline Model**: AUC = 0.76.
-  - **Final Model**: AUC = 0.80.
-- **Significance**: The increased AUC demonstrates better discrimination ability in the final model, capturing more nuanced relationships between features and outcomes.
+- **Description**: The ROC curve shows strong model performance with an AUC of 0.830, significantly better than random guessing (diagonal line). The curve's shape indicates good discrimination ability, with a sharp initial rise suggesting the model is particularly good at identifying the most confident predictions. The high AUC score validates that despite modest accuracy improvements, the model is making reliable probabilistic predictions.
 
 ---
-
 ## **Feature Engineering and Selection**
 - **Added Features**:
-  1. **`gold_xp_interaction`**: Accounts for the synergy between gold and experience, hypothesizing that their combined effect influences match outcomes.
-  2. **`kills_deaths_ratio`**: Highlights the team's efficiency in securing kills versus their deaths, a critical metric in competitive matches.
-- **Reasoning**: These features were derived from the game's mechanics, emphasizing interactions and strategic dynamics that were not captured by raw gold and experience differences.
-
----
+  1. **`kills_deaths_ratio`**: While intended to capture team fight efficiency, this feature ultimately did not contribute significantly to the model's performance, as shown by the feature importance analysis.
+  2. **`gold_xp_interaction`**: Similarly, this engineered feature did not appear as significant in the final model, suggesting that the raw gold and XP differences were more informative.
+- **Feature Importance Results**: The analysis showed that the original features were most predictive:
+  - golddiffat25: 0.46 importance
+  - xpdiffat25: 0.378 importance
+  - killsat25: 0.159 importance
+  - deathsat25: 0.000 importance
 
 ## **Modeling Algorithm and Hyperparameter Tuning**
-- **Algorithm**: The final model used a `RandomForestClassifier`, chosen for its ability to handle non-linear relationships and feature interactions.
-- **Hyperparameters**:
-  - `max_depth = 5`: Limits tree depth to prevent overfitting.
-  - `min_samples_split = 10`: Ensures splits occur only with sufficient data points.
-  - `n_estimators = 200`: Balances computational cost and predictive power.
-- **Tuning Method**: Performed using `GridSearchCV`, evaluating hyperparameter combinations with cross-validation for robust performance estimates.
-
----
+- **Algorithm**: Random Forest Classifier, chosen for its ability to handle non-linear relationships and feature interactions.
+- **Best Hyperparameters** (from GridSearchCV):
+  - `max_depth = 10`
+  - `min_samples_leaf = 1`
+  - `min_samples_split = 2`
+  - `n_estimators = 100`
+- **Tuning Method**: GridSearchCV with 3-fold cross-validation.
 
 ### **Performance Comparison**
 - **Baseline Model**:
-  - Accuracy: 0.76.
-  - AUC: 0.76.
-  - F1-Score (Class 1): Moderate.
+  - Accuracy: 75.56%
+  - Equal performance across classes
 - **Final Model**:
-  - Accuracy: 0.71.
-  - AUC: 0.80.
-  - F1-Score (Class 1): Higher, indicating better focus on predicting wins.
-- **Improvement**: Despite a slight dip in overall accuracy, the final model exhibits better performance in recall, precision, and AUC, particularly for Class 1. This reflects a more targeted approach to the prediction task.
-
-<iframe
-  src="assets/feature_importance_final_2.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
+  - Accuracy: 75.39%
+  - Confusion Matrix shows balanced prediction:
+    - True Negatives (Losses): 10,550
+    - False Positives: 3,332
+    - False Negatives: 3,472
+    - True Positives (Wins): 10,410
+  - ROC-AUC: 0.830, indicating strong discriminative ability
 
 ## Conclusion
 
-This project explores the relationship between in-game metrics and match outcomes in professional League of Legends esports matches. By leveraging a rich dataset, we developed predictive models to classify match outcomes (win or loss) based on features that capture team performance at the 25-minute mark. 
-
-Our journey began with data cleaning and quality assessments to ensure the integrity of the analysis. Key features, such as `golddiffat25` and `xpdiffat25`, were identified as primary predictors due to their strong correlation with match outcomes. Missing values were handled appropriately, and irrelevant columns were removed to streamline the analysis.
-
-The baseline model, a Random Forest Classifier, demonstrated a strong initial performance with an accuracy of 75.56% and balanced precision, recall, and F1-scores. However, to better capture the complexity of the game dynamics, we engineered additional features:
-- **Kills-to-Deaths Ratio**: Reflecting team efficiency in engagements.
-- **Gold-Experience Interaction**: Highlighting the combined effect of resource and level advantages.
-
-Through iterative feature engineering and hyperparameter optimization using GridSearchCV, we improved the model's interpretability and performance. The final model achieved an accuracy of 75.57%, with notable improvements in capturing nuanced patterns through the engineered features.
-
-Visualizations played a key role in understanding the data and the model’s performance. Distribution plots illustrated the separation between winning and losing teams based on gold difference, while confusion matrices and ROC curves highlighted the strengths and limitations of the models. Feature importance charts provided further insights into how each feature contributed to the predictions.
+This project explored predicting League of Legends match outcomes using data at the 25-minute mark. While our feature engineering attempts (kills/deaths ratio and gold/XP interaction) were theoretically sound, the empirical results showed that the original features were most predictive.
 
 ### Key Findings:
-1. **Gold Difference as a Core Predictor**:
-   - Teams leading in gold at 25 minutes have a significant advantage, emphasizing the importance of this metric in determining match outcomes.
-2. **Enhanced Predictive Power**:
-   - Feature engineering introduced gameplay-relevant metrics that improved the model's ability to generalize, capturing interactions not evident in the baseline model.
-3. **Balanced Model Performance**:
-   - The final model performed consistently across both classes, minimizing bias and ensuring robustness.
+1. **Resource Advantages Dominate**:
+   - Gold difference (0.46) and XP difference (0.378) were the strongest predictors
+   - Kill count had moderate importance (0.159)
+   - Death count showed no significant predictive power
 
-This project demonstrates the power of data-driven approaches in understanding and predicting complex phenomena, such as competitive esports outcomes. By combining domain knowledge, data science techniques, and thoughtful modeling, we were able to build a pipeline that can provide actionable insights into gameplay performance.
+2. **Model Performance**:
+   - The final model achieved 75.39% accuracy
+   - Strong ROC-AUC score of 0.830
+   - Balanced performance across winning and losing predictions
 
-The results, along with interactive visualizations, are presented on this GitHub Page to make the findings accessible and engaging for a broader audience. Whether you are a data scientist, a gamer, or simply curious about esports analytics, this project showcases how data can reveal the hidden dynamics of competitive games.
+3. **Feature Engineering Impact**:
+   - Simpler features outperformed engineered ones
+   - Original resource-based metrics (gold, XP) captured most of the predictive signal
+
+This analysis suggests that in professional League of Legends, resource advantages at 25 minutes are more reliable predictors of game outcomes than combat statistics or engineered feature combinations. The high ROC-AUC score indicates that the model makes reliable probabilistic predictions, even though the accuracy remained similar to the baseline model.
