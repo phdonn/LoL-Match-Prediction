@@ -277,61 +277,85 @@ To improve the model, additional features such as kill counts, deaths, and team 
 ## **Graph Analysis and Descriptions**
 
 
-Best Parameters: {'model__max_depth': 5, 'model__min_samples_split': 10, 'model__n_estimators': 200}
-Accuracy: 0.7556548047831725
+Best Parameters: {'model__class_weight': None, 'model__max_depth': 10, 'model__max_features': 'sqrt', 'model__min_samples_leaf': 4, 'model__min_samples_split': 2, 'model__n_estimators': 100}
+Accuracy: 0.7539979829995678
 
 Classification Report:
               precision    recall  f1-score   support
 
-           0       0.76      0.76      0.76     13882
-           1       0.76      0.75      0.76     13882
+           0       0.75      0.76      0.76     13882
+           1       0.76      0.75      0.75     13882
 
-    accuracy                           0.76     27764
-   macro avg       0.76      0.76      0.76     27764
-weighted avg       0.76      0.76      0.76     27764
+    accuracy                           0.75     27764
+   macro avg       0.75      0.75      0.75     27764
+weighted avg       0.75      0.75      0.75     27764
 
+The two features I engineered were:
 
-The optimized model achieved a best accuracy of 75.57% using the hyperparameters {'max_depth': 5, 'min_samples_split': 10, 'n_estimators': 200}. This indicates that a relatively shallow decision tree depth combined with moderate splits and a sufficient number of estimators balances complexity and performance effectively.
+1. Kills/Deaths Ratio (killsat25 / (deathsat25 + 1))
+This feature makes sense because it captures a team's efficiency in teamfights and skirmishes. A higher K/D ratio suggests that a team is not only securing kills but doing so while minimizing their own deaths, indicating superior positioning and teamfight execution. The ratio is more informative than raw kills or deaths because securing kills while staying alive allows a team to maintain map pressure and capitalize on their advantages. I added 1 to the denominator to handle cases with zero deaths while preserving the ratio's meaning.
 
-The classification report shows balanced precision, recall, and F1-scores of approximately 0.76 for both classes (0 for losses and 1 for wins), demonstrating that the model performs well for both positive and negative outcomes without significant bias. Specifically:
+2. Gold-XP Interaction (golddiffat25 * xpdiffat25)
+This interaction term captures the compounding effect of having both a gold and experience advantage. In League of Legends, these advantages tend to amplify each other - a gold lead lets you buy better items, which helps secure more kills and objectives, leading to an XP advantage. Similarly, an XP lead gives you access to higher-level abilities, making it easier to secure gold through kills and objectives. A team ahead in both metrics is typically in a much stronger position than having just one advantage, because they have both better items AND higher-level abilities. Multiplying these differences captures this synergistic relationship.
 
-For losses (0), the model captures 76% of all losses (recall) and ensures that 76% of predicted losses are accurate (precision).
-For wins (1), the model captures 75% of all wins (recall) and ensures that 76% of predicted wins are accurate (precision).
-These metrics highlight the model's robustness and consistency across both classes. Compared to the baseline model, the optimized hyperparameters have slightly improved overall accuracy and balanced class performance, solidifying the model’s predictive reliability for the League of Legends match outcomes.
+However, looking at my model's actual feature importance scores:
+```
+golddiffat25: 0.4628
+xpdiffat25: 0.3777
+killsat25: 0.1595
+deathsat25: 0.0000
+```
 
-### Final Model Features and Rationale:
+The baseline features (gold and XP difference) remained the most important predictors, suggesting that my engineered features may not have captured additional signal beyond what was already present in the original features. This could indicate that the raw gold and XP differences are already sufficient proxies for team advantages at 25 minutes, or that my feature engineering approach didn't effectively capture the underlying game dynamics I was targeting.
 
-For the final model, we added two engineered features: 
-1. **Kills-to-Deaths Ratio (`kills_deaths_ratio`)**: This feature captures the efficiency of teams in converting engagements into favorable outcomes. High kill-to-death ratios typically correlate with better team coordination and dominance in matches, making it a strong indicator of match performance.
-2. **Gold and Experience Interaction (`gold_xp_interaction`)**: This feature models the interaction between gold difference and experience difference, reflecting a team's overall advantage in terms of resources and level progression. Teams with advantages in both aspects often have a better chance of winning matches.
-
-These features were chosen based on their alignment with the **data-generating process**:
-- A team’s kill-to-death ratio directly reflects the team's ability to execute plays successfully during the game.
-- The combination of gold and experience advantage provides a holistic measure of resource control, which is pivotal for predicting match outcomes.
+<iframe
+  src="assets/feature_importance_final_2.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 ### Modeling Algorithm and Hyperparameters:
 
-The final model utilized a **Random Forest Classifier**, an ensemble-based decision tree algorithm. This choice was motivated by Random Forest's ability to handle non-linear relationships and interactions between features effectively while being resistant to overfitting due to its bagging approach.
+The final model utilized a **Random Forest Classifier**, chosen for its ability to handle non-linear relationships and feature interactions while being resistant to overfitting through ensemble learning.
 
-#### **Best Hyperparameters**:
-- `max_depth`: 5 (limits the tree depth to control complexity and overfitting).
-- `min_samples_split`: 10 (ensures sufficient data in splits for stable decisions).
-- `n_estimators`: 200 (uses 200 trees for robust predictions).
+#### **Best Hyperparameters** (from GridSearchCV):
+- `max_depth`: 10
+- `min_samples_leaf`: 1
+- `min_samples_split`: 2
+- `n_estimators`: 100
 
-These hyperparameters were identified using **GridSearchCV** with 3-fold cross-validation to balance bias and variance while finding the best combination.
+These hyperparameters were selected using **GridSearchCV** with 3-fold cross-validation, exploring a comprehensive parameter space to find the optimal configuration.
 
-### Improvement Over Baseline Model:
+### Comparison to Baseline Model:
 
-1. **Performance Gains**:
-   - **Final Model Accuracy**: 75.57% (marginal improvement over the baseline's 75.56%).
-   - **Balanced Precision, Recall, and F1-scores**: The final model maintains a consistent balance across classes while leveraging the additional features to capture more nuanced patterns.
+1. **Performance Metrics**:
+   - **Baseline Model Accuracy**: 76.56%
+   - **Final Model Accuracy**: 75.39%
+   - While the final model shows slightly lower accuracy, it provides more balanced predictions across classes.
 
-2. **Enhanced Interpretability**:
-   - The inclusion of `kills_deaths_ratio` and `gold_xp_interaction` reflects more granular team performance metrics, adding domain-specific relevance to the model.
-   - Feature importance analysis showed that the newly added features contributed significantly to the model’s predictions.
+2. **Feature Importance Analysis**:
+   - The model heavily relies on the original features:
+     - golddiffat25: 0.4628
+     - xpdiffat25: 0.3777
+     - killsat25: 0.1595
+     - deathsat25: 0.0000
+   - This suggests that the base features (gold and XP differences) are strong predictors of game outcomes at 25 minutes.
 
-3. **Robustness**:
-   - With optimized hyperparameters, the final model avoids overfitting while capturing essential interactions between features.
+3. **Model Characteristics**:
+   - The relatively shallow tree depth (max_depth=10) helps prevent overfitting
+   - Low minimum samples parameters allow the model to capture fine-grained patterns
+   - 100 trees provide a good balance between model complexity and performance
+
+While the final model didn't improve raw accuracy, its more balanced approach to prediction and reliance on interpretable game metrics suggests it may be more reliable across different game scenarios.
+
+   <iframe
+    src="assets/accuracy_comparison_2.html"
+    width="800"
+    height="600"
+    frameborder="0"
+    ></iframe>
+
 
 ### Conclusion:
 
@@ -339,7 +363,7 @@ The final model builds on the baseline by incorporating features that are rooted
 
 ## **Graph 1: Baseline Feature Importance**
 <iframe
-  src="assets/feature_importance.html"
+  src="assets/feature_importance_2.html"
   width="800"
   height="600"
   frameborder="0"
@@ -358,9 +382,10 @@ The final model builds on the baseline by incorporating features that are rooted
 
 ---
 
+
 ## **Graph 3: Accuracy Comparison**
 <iframe
-  src="assets/feature_importance_comparison.html"
+  src="assets/feature_importance_comparison_2.html"
   width="800"
   height="600"
   frameborder="0"
@@ -373,7 +398,7 @@ The final model builds on the baseline by incorporating features that are rooted
 
 ## **Graph 4: Comparison of Metrics by Class**
 <iframe
-  src="assets/comparison_metric_class.html"
+  src="assets/model_metric_2.html"
   width="800"
   height="600"
   frameborder="0"
@@ -389,7 +414,7 @@ The final model builds on the baseline by incorporating features that are rooted
 
 ## **Graph 5: Confusion Matrices**
 <iframe
-  src="assets/confusion_matrix_comparison.html"
+  src="assets/confusion_matrix_2.html"
   width="800"
   height="600"
   frameborder="0"
@@ -405,7 +430,7 @@ The final model builds on the baseline by incorporating features that are rooted
 ## **Graph 6: ROC Curve Comparison**
 
 <iframe
-  src="assets/roc_curve_comparison.html"
+  src="assets/roc_curve_2.html"
   width="800"
   height="600"
   frameborder="0"
@@ -446,8 +471,12 @@ The final model builds on the baseline by incorporating features that are rooted
   - F1-Score (Class 1): Higher, indicating better focus on predicting wins.
 - **Improvement**: Despite a slight dip in overall accuracy, the final model exhibits better performance in recall, precision, and AUC, particularly for Class 1. This reflects a more targeted approach to the prediction task.
 
-
-
+<iframe
+  src="assets/feature_importance_final_2.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 ## Conclusion
 
