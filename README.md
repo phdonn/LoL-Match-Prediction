@@ -1,7 +1,6 @@
-```markdown
-#### Predicting Match Outcomes in League of Legends: A Data-Driven Approach
+# Predicting Match Outcomes in League of Legends: A Data-Driven Approach
 
-### Introduction
+# Introduction
 
 This project analyzes professional League of Legends match data to understand the factors influencing match outcomes. The dataset includes detailed game statistics, and the analysis focuses on the relationship between gold difference at 25 minutes (`golddiffat25`) and match outcomes (`result`).
 
@@ -11,7 +10,7 @@ The dataset originally contained 116,064 rows and 161 columns. The `golddiffat25
 
 The data cleaning process significantly impacted the analysis by removing incomplete data points that could have introduced errors. Although the dataset size was reduced, this step preserved the integrity of the results.
 
-## Cleaned Data Head
+### Cleaned Data Head
 
 ```plaintext
    golddiffat25  result
@@ -22,22 +21,21 @@ The data cleaning process significantly impacted the analysis by removing incomp
 184        2194.0       1
 ```
 
-## Univariate Analysis
+### Univariate Analysis
 
 A histogram was created to visualize the distribution of the `golddiffat25` column. The gold difference at 25 minutes shows a roughly normal distribution centered around zero, with most values falling between -5,000 and 5,000. This distribution suggests that most games are balanced around the 25-minute mark, with extreme gold advantages or disadvantages being relatively rare. This finding highlights the competitive nature of League of Legends matches and suggests that small gold advantages can significantly influence outcomes.
 
 
-## Bivariate Analysis
+### Bivariate Analysis
 
 The relationship between `golddiffat25` and `result` was analyzed using a scatter plot and a box plot. The scatter plot demonstrated a moderate positive trend, indicating that higher gold differences are generally associated with winning outcomes. The box plot showed a clear distinction in the gold difference distributions for wins and losses. Teams that win matches (`result = 1`) tend to have positive gold differences, while teams that lose (`result = 0`) tend to have negative or neutral gold differences. This analysis confirms that early-game gold leads play a critical role in determining match outcomes.
 
-![Gold Difference vs Match Outcome](images/bivariate_plot.png)
 
-## Aggregate Statistics
+### Aggregate Statistics
 
 The dataset was grouped by match outcome (`result`), and the mean gold difference for each outcome was calculated. Teams that won their matches had an average gold lead of 1,511.96, while losing teams had an average gold deficit of -1,511.96. This significant difference reinforces the idea that gold advantage at 25 minutes is a key indicator of success in League of Legends matches.
 
-## Grouped Table
+### Grouped Table
 
 ```plaintext
    result  golddiffat25
@@ -45,11 +43,11 @@ The dataset was grouped by match outcome (`result`), and the mean gold differenc
 1       1   1511.962828
 ```
 
-## Missing Value Handling
+### Missing Value Handling
 
 Missing values in the `golddiffat25` column were handled by dropping rows where this column was `NaN`. This approach ensured that only complete and accurate data points were used in the analysis. Imputation was not performed because the gold difference is a key feature, and approximating its values could have introduced bias into the results.
 
-# Univariate Analysis
+### Univariate Analysis
 A histogram was created to visualize the distribution of the golddiffat25 column. The gold difference at 25 minutes shows a roughly normal distribution centered around zero, with most values falling between -5,000 and 5,000. This distribution suggests that most games are balanced around the 25-minute mark, with extreme gold advantages or disadvantages being relatively rare. This finding highlights the competitive nature of League of Legends matches and suggests that small gold advantages can significantly influence outcomes.
 
 <iframe
@@ -59,7 +57,7 @@ A histogram was created to visualize the distribution of the golddiffat25 column
   frameborder="0"
 ></iframe>
 
-# Gold Difference vs Match Outcome
+### Gold Difference vs Match Outcome
 
 <iframe
   src="assets/gold_difference_vs_match_outcome.html"
@@ -72,7 +70,7 @@ This scatter plot visualizes the relationship between the gold difference at 25 
 - `1` indicates a win,
 - `0` indicates a loss.
 
-# Insights from the Graph:
+### Insights from the Graph:
 1. **Positive Correlation Between Gold Difference and Winning**:
    - Matches with a positive gold difference at 25 minutes (greater than 0) are overwhelmingly associated with winning outcomes (`result = 1`).
    - This supports the idea that early gold advantages significantly improve a team's chances of securing victory.
@@ -89,7 +87,7 @@ This scatter plot visualizes the relationship between the gold difference at 25 
    - The analysis highlights the importance of securing a gold lead by the 25-minute mark in League of Legends matches.
    - Teams should focus on early-game strategies such as effective farming, successful skirmishes, and objective control to achieve a gold advantage and increase their chances of winning.
 
-# Context of the Study:
+### Context of the Study:
 This graph aligns with the central hypothesis of our study: **Gold differences at 25 minutes play a crucial role in determining match outcomes.** By identifying this trend, we gain insights into the dynamics of professional and competitive League of Legends games, emphasizing the critical impact of mid-game performance.
 
 The scatter plot reinforces that a team's ability to secure an economic advantage early on often translates into tangible success, underscoring the significance of mid-game strategies in shaping match results. This is particularly valuable for teams aiming to refine their gameplay and for analysts studying match dynamics.
@@ -108,13 +106,13 @@ This graph provides a clear comparison of the distribution of gold differences a
 
 ---
 
-# 1. **Gold Difference Patterns for Winners and Losers**
+#### 1. **Gold Difference Patterns for Winners and Losers**
    - The box for winning teams (`result = 1`) is entirely above the zero line, indicating that winners tend to have **positive gold differences** at the 25-minute mark.
    - Conversely, the box for losing teams (`result = 0`) is centered below zero, showing that losers often have **negative or neutral gold differences**.
 
 ---
 
-# 2. **Spread of Gold Differences**
+#### 2. **Spread of Gold Differences**
    - **Winning Teams**:
      - The range of gold differences is tighter, with fewer outliers, suggesting that a moderate lead at 25 minutes is often sufficient to secure a win.
    - **Losing Teams**:
@@ -122,18 +120,18 @@ This graph provides a clear comparison of the distribution of gold differences a
 
 ---
 
-# 3. **Median Gold Difference**
+#### 3. **Median Gold Difference**
    - The median for winners is significantly above zero, emphasizing that even a small gold advantage at 25 minutes tends to correlate with a win.
    - For losers, the median is slightly below zero, suggesting that even small deficits in gold can be detrimental.
 
 ---
 
-# 4. **Outliers**
+#### 4. **Outliers**
    - There are extreme cases where teams with very high or very low gold differences deviate significantly from the typical distributions. These outliers might represent games with unusual dynamics, such as snowballing leads or major comebacks.
 
 ---
 
-## Implications for the Study
+#### Implications for the Study
 This graph reinforces the critical role of mid-game performance in determining match outcomes. It shows that achieving a gold lead by the 25-minute mark is not just advantageous but often essential for victory. The tighter and more positive distribution for winners underscores that teams must focus on early-game strategies to secure a stable advantage, while the broader range for losing teams suggests the difficulty of recovering from a deficit.
 
 ## Conclusion
@@ -173,6 +171,12 @@ This prediction problem provides actionable insights into the importance of earl
 # Model Description
 The baseline model used is a **Logistic Regression Classifier** implemented within a scikit-learn `Pipeline`. Logistic regression is well-suited for this binary classification task as it predicts the probability of a team winning (`result = 1`) or losing (`result = 0`). The pipeline ensures all preprocessing steps, such as feature scaling, are integrated seamlessly with model training.
 
+<iframe
+  src="assets/pipeline.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 ## Features in the Model
 The model uses the following features:
 
@@ -220,8 +224,15 @@ To improve the model, additional features such as kill counts, deaths, and team 
 ## **Graph Analysis and Descriptions**
 
 ## **Graph 1: Baseline Feature Importance**
+<iframe
+  src="assets/feature_importance.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 - **Description**: The baseline feature importance graph shows the contribution of `golddiffat25` and `xpdiffat25` to the baseline model. Both features hold similar importance, with no additional interactions or engineered features. This reflects a straightforward approach to prediction based solely on gold and experience differences at 25 minutes.
 - **Significance**: The reliance on raw features may limit the model's ability to capture complex relationships in the data, leading to moderate accuracy but lacking nuance.
+
 
 ---
 
@@ -234,20 +245,42 @@ To improve the model, additional features such as kill counts, deaths, and team 
 ---
 
 ## **Graph 3: Accuracy Comparison**
+<iframe
+  src="assets/feature_importance_comparison.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 - **Description**: The bar chart compares the accuracy of the baseline model (0.76) to the final model (0.71). While accuracy slightly decreased, the final model provides richer insights through feature engineering and better class-specific metrics, as evidenced by the next graph.
 - **Significance**: Accuracy alone may not capture improvements in recall or precision for specific classes, which are critical in applications where class imbalance exists.
+
 
 ---
 
 ## **Graph 4: Comparison of Metrics by Class**
+<iframe
+  src="assets/comparison_metric_class.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
 - **Description**: This graph compares precision, recall, and F1-scores for Class 0 (Loss) and Class 1 (Win) between the baseline and final models:
   - **Class 0**: Precision remained stable, but recall decreased slightly, affecting the F1-score.
   - **Class 1**: Recall significantly improved, with a marginal increase in precision and F1-score.
 - **Significance**: Improvements in recall for Class 1 suggest the final model is better at identifying wins, which could be prioritized depending on the use case.
 
+
 ---
 
 ## **Graph 5: Confusion Matrices**
+<iframe
+  src="assets/confusion_matrix_comparison.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
 - **Description**: Confusion matrices compare the baseline and final models:
   - **Baseline Model**: More balanced predictions but with higher false positives and false negatives.
   - **Final Model**: Reduced false negatives for Class 1 but slightly increased false positives for Class 0.
@@ -256,6 +289,13 @@ To improve the model, additional features such as kill counts, deaths, and team 
 ---
 
 ## **Graph 6: ROC Curve Comparison**
+
+<iframe
+  src="assets/roc_curve_comparison.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 - **Description**: The ROC curve shows the True Positive Rate (TPR) versus False Positive Rate (FPR) for both models:
   - **Baseline Model**: AUC = 0.76.
   - **Final Model**: AUC = 0.80.
