@@ -103,7 +103,7 @@ The scatter plot reinforces that a team's ability to secure an economic advantag
 ></iframe>
 
 This graph provides a clear comparison of the distribution of gold differences at the 25-minute mark (`golddiffat25`) for winning (`result = 1`) and losing (`result = 0`) teams in League of Legends matches. Here's an analysis of what the graph tells us:
-
+The calculated correlation between golddiffat25 (gold difference at the 25-minute mark) and result (match outcome) is 0.478. This indicates a moderate positive correlation between the two variables.
 ---
 
 #### 1. **Gold Difference Patterns for Winners and Losers**
@@ -177,6 +177,35 @@ The baseline model used is a **Logistic Regression Classifier** implemented with
   height="600"
   frameborder="0"
 ></iframe>
+
+|   True Labels |     0 |     1 |
+|--------------:|------:|------:|
+|             0 | 10417 |  3465 |
+|             1 |  3320 | 10562 |
+
+Grouped Statistics:
+|   result |   golddiffat25 |
+|---------:|---------------:|
+|        0 |       -1511.96 |
+|        1 |        1511.96 |
+
+
+### Baseline Model Performance:
+Accuracy: 0.7556187869183115
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.76      0.75      0.75     13882
+           1       0.75      0.76      0.76     13882
+
+    accuracy                           0.76     27764
+   macro avg       0.76      0.76      0.76     27764
+weighted avg       0.76      0.76      0.76     27764
+
+
+The results demonstrate the effectiveness of using gold difference at 25 minutes (golddiffat25) as a critical predictor for match outcomes. From the confusion matrix, the model accurately classifies a significant number of matches, with 10,417 True Negatives (correctly predicted losses) and 10,562 True Positives (correctly predicted wins). However, there are also 3,465 False Positives and 3,320 False Negatives, indicating areas for improvement in misclassification. The grouped statistics further emphasize the strong correlation between gold difference and match results: losing teams average a gold difference of -1511.96, while winning teams average a positive difference of 1511.96. This substantial separation suggests that teams leading in gold at 25 minutes are significantly more likely to win. These findings validate the inclusion of golddiffat25 as a key feature in the predictive model, highlighting its importance in capturing the dynamics of match outcomes.
+
 ## Features in the Model
 The model uses the following features:
 
@@ -189,6 +218,7 @@ The model uses the following features:
 Both features are quantitative and continuous. Since there were no ordinal or nominal features, encoding was not required. The features were scaled using **StandardScaler** within the pipeline to normalize their ranges and ensure improved logistic regression performance.
 
 ## Model Performance
+
 The model was evaluated on a test set comprising 30% of the dataset to assess its generalization capability. The following metrics were observed:
 
 - **Accuracy**: 75.56%  
@@ -197,6 +227,7 @@ The model was evaluated on a test set comprising 30% of the dataset to assess it
 - **F1 Score**: 75% (Class 0), 76% (Class 1)  
 
 These results indicate that the baseline model performs reasonably well for the task, achieving a balanced performance across both classes. The F1-score, in particular, highlights that the model maintains a good balance between precision and recall.
+
 
 ## Is the Model “Good”?
 The current baseline model is "good" as an initial attempt because:
@@ -210,6 +241,8 @@ The current baseline model is "good" as an initial attempt because:
 3. **Simplicity and Interpretability**:  
    Logistic regression provides clear and interpretable results, making it easier to understand the impact of features on match outcomes.
 
+
+
 ## Model Limitations
 While the baseline model provides a solid starting point, it has the following limitations:
 - It does not account for complex interactions or nonlinear relationships between features.
@@ -222,6 +255,30 @@ To improve the model, additional features such as kill counts, deaths, and team 
 
 ### Final Model
 ## **Graph Analysis and Descriptions**
+
+
+Best Parameters: {'model__max_depth': 5, 'model__min_samples_split': 10, 'model__n_estimators': 200}
+Accuracy: 0.7556548047831725
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.76      0.76      0.76     13882
+           1       0.76      0.75      0.76     13882
+
+    accuracy                           0.76     27764
+   macro avg       0.76      0.76      0.76     27764
+weighted avg       0.76      0.76      0.76     27764
+
+
+The optimized model achieved a best accuracy of 75.57% using the hyperparameters {'max_depth': 5, 'min_samples_split': 10, 'n_estimators': 200}. This indicates that a relatively shallow decision tree depth combined with moderate splits and a sufficient number of estimators balances complexity and performance effectively.
+
+The classification report shows balanced precision, recall, and F1-scores of approximately 0.76 for both classes (0 for losses and 1 for wins), demonstrating that the model performs well for both positive and negative outcomes without significant bias. Specifically:
+
+For losses (0), the model captures 76% of all losses (recall) and ensures that 76% of predicted losses are accurate (precision).
+For wins (1), the model captures 75% of all wins (recall) and ensures that 76% of predicted wins are accurate (precision).
+These metrics highlight the model's robustness and consistency across both classes. Compared to the baseline model, the optimized hyperparameters have slightly improved overall accuracy and balanced class performance, solidifying the model’s predictive reliability for the League of Legends match outcomes.
+
 
 ## **Graph 1: Baseline Feature Importance**
 <iframe
