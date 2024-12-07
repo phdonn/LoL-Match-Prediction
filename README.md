@@ -6,9 +6,7 @@ This project analyzes professional League of Legends match data to understand th
 
 ## Data Cleaning Steps and Exploratory Data Analysis
 
-The dataset originally contained 116,064 rows and 161 columns. The `golddiffat25` column, which represents the gold difference at the 25-minute mark, had 23,520 missing values, while the `result` column had no missing values. Rows with missing values in `golddiffat25` were dropped because this column is critical for analysis, reducing the dataset to 92,544 rows. Both `golddiffat25` and `result` columns were converted to numeric data types to ensure compatibility with analytical methods. The cleaned dataset now includes only complete data, ensuring the results are accurate and reliable.
-
-The data cleaning process significantly impacted the analysis by removing incomplete data points that could have introduced errors. Although the dataset size was reduced, this step preserved the integrity of the results.
+The dataset initially had 116,064 rows and 161 columns. The `golddiffat25` column, crucial for analysis, had 23,520 missing values, while `result` had none. Dropping rows with missing `golddiffat25` reduced the dataset to 92,544 rows. Both columns were converted to numeric types for compatibility, ensuring accurate and reliable analysis with complete data.
 
 ### Cleaned Data Head
 
@@ -20,15 +18,11 @@ The data cleaning process significantly impacted the analysis by removing incomp
 183        5016.0       1
 184        2194.0       1
 ```
+### Univariate Analysis  
+A histogram of `golddiffat25` shows a roughly normal distribution centered around zero, with most values between -5,000 and 5,000. This indicates that games are generally balanced at 25 minutes, with extreme gold differences being rare, reflecting the competitive nature of League of Legends.
 
-### Univariate Analysis
-
-A histogram was created to visualize the distribution of the `golddiffat25` column. The gold difference at 25 minutes shows a roughly normal distribution centered around zero, with most values falling between -5,000 and 5,000. This distribution suggests that most games are balanced around the 25-minute mark, with extreme gold advantages or disadvantages being relatively rare. This finding highlights the competitive nature of League of Legends matches and suggests that small gold advantages can significantly influence outcomes.
-
-
-### Bivariate Analysis
-
-The relationship between `golddiffat25` and `result` was analyzed using a scatter plot and a box plot. The scatter plot demonstrated a moderate positive trend, indicating that higher gold differences are generally associated with winning outcomes. The box plot showed a clear distinction in the gold difference distributions for wins and losses. Teams that win matches (`result = 1`) tend to have positive gold differences, while teams that lose (`result = 0`) tend to have negative or neutral gold differences. This analysis confirms that early-game gold leads play a critical role in determining match outcomes. Both graphs have more detailed analysis further down. 
+### Bivariate Analysis  
+Scatter and box plots reveal a positive relationship between `golddiffat25` and `result`. Winning teams (`result = 1`) typically have positive gold differences, while losing teams (`result = 0`) have negative or neutral ones, highlighting the importance of early-game gold leads in match outcomes.
 
 ### Aggregate Statistics
 
@@ -42,12 +36,17 @@ The dataset was grouped by match outcome (`result`), and the mean gold differenc
 1       1   1511.962828
 ```
 
-### Missing Value Handling
+**Data Processing & Distribution**
 
-Missing values in the `golddiffat25` column were handled by dropping rows where this column was `NaN`. This approach ensured that only complete and accurate data points were used in the analysis. Imputation was not performed because the gold difference is a key feature, and approximating its values could have introduced bias into the results.
+*Missing Values*
+- Dropped rows with missing `golddiffat25`
+- No imputation to avoid bias in key metric
 
-### Univariate Analysis
-A histogram was created to visualize the distribution of the golddiffat25 column. The gold difference at 25 minutes shows a roughly normal distribution centered around zero, with most values falling between -5,000 and 5,000. This distribution suggests that most games are balanced around the 25-minute mark, with extreme gold advantages or disadvantages being relatively rare. This finding highlights the competitive nature of League of Legends matches and suggests that small gold advantages can significantly influence outcomes.
+*Gold Difference Distribution*
+- Normal distribution centered at 0
+- Most values: -5,000 to +5,000
+- Suggests balanced gameplay at 25min
+- Small gold leads can be decisive
 
 <iframe
   src="assets/gold_difference_histogram.html"
@@ -86,11 +85,6 @@ This scatter plot visualizes the relationship between the gold difference at 25 
    - The analysis highlights the importance of securing a gold lead by the 25-minute mark in League of Legends matches.
    - Teams should focus on early-game strategies such as effective farming, successful skirmishes, and objective control to achieve a gold advantage and increase their chances of winning.
 
-### Context of the Study:
-This graph aligns with the central hypothesis of our study: **Gold differences at 25 minutes play a crucial role in determining match outcomes.** By identifying this trend, we gain insights into the dynamics of professional and competitive League of Legends games, emphasizing the critical impact of mid-game performance.
-
-The scatter plot reinforces that a team's ability to secure an economic advantage early on often translates into tangible success, underscoring the significance of mid-game strategies in shaping match results. This is particularly valuable for teams aiming to refine their gameplay and for analysts studying match dynamics.
-
 
 ## Gold Difference Distribution
 <iframe
@@ -128,9 +122,6 @@ The scatter plot reinforces that a team's ability to secure an economic advantag
 
 ---
 
-#### Implications for the Study
-This graph reinforces the critical role of mid-game performance in determining match outcomes. It shows that achieving a gold lead by the 25-minute mark is not just advantageous but often essential for victory. The tighter and more positive distribution for winners underscores that teams must focus on early-game strategies to secure a stable advantage, while the broader range for losing teams suggests the difficulty of recovering from a deficit.
-
 ## Conclusion
 
 This analysis highlights the importance of early-game gold advantages in League of Legends. The findings suggest that teams with a higher gold difference at 25 minutes are significantly more likely to win. This insight provides valuable strategic implications for teams and fans alike, emphasizing the importance of early-game performance in professional play.
@@ -151,22 +142,29 @@ The features used to train the model include:
 3. **`killsat25`**: Number of kills achieved by the team at the 25-minute mark (quantitative).  
 4. **`deathsat25`**: Number of deaths suffered by the team at the 25-minute mark (quantitative).  
 
-These features were chosen because they represent in-game performance metrics available at the time of prediction. They are critical indicators of early-game dominance, which strongly influences match outcomes.
 
-## Metric for Model Evaluation
-The primary metric used to evaluate the model is the **F1-score**, which balances precision and recall. This metric was chosen over accuracy because of the potential imbalance in the dataset, where some outcomes (e.g., wins or losses) may occur more frequently than others. The F1-score ensures that the model performs well in predicting both classes without favoring the majority class.
 
-## Justification for Features
-All features included in the model are based on information available at the 25-minute mark, ensuring they are valid for prediction. This aligns with the temporal constraints of the problem, as only data up to 25 minutes into the game is used to predict the outcome. Metrics that would only be available after the match ends (e.g., final kills or gold totals) were excluded to avoid data leakage.
+**Model Evaluation**
+F1-score is used over accuracy to handle potential class imbalance in win/loss predictions.
 
-## Why This Problem Matters
-This prediction problem provides actionable insights into the importance of early-game performance in competitive League of Legends. By predicting match outcomes based on early-game metrics, teams can identify critical areas to improve their strategies and optimize their chances of success.
+**Features**
+Only includes data available at 25 minutes to maintain prediction validity and prevent data leakage.
+
+**Significance**
+Helps teams optimize early-game strategies by identifying key performance metrics that influence match outcomes.
 
 ### Baseline Model Description
 
-# Model Description
-The baseline model used is a **Logistic Regression Classifier** implemented within a scikit-learn `Pipeline`. Logistic regression is well-suited for this binary classification task as it predicts the probability of a team winning (`result = 1`) or losing (`result = 0`). The pipeline ensures all preprocessing steps, such as feature scaling, are integrated seamlessly with model training.
+Baseline Model
+Using Logistic Regression via scikit-learn Pipeline for binary win/loss classification.
+Performance
 
+True Losses (TN): 10,417
+True Wins (TP): 10,562
+False Positives: 3,465
+False Negatives: 3,320
+
+Gold difference at 25 minutes proves to be a strong predictor, though misclassification errors suggest room for improvement.
 ### Baseline Model Performance:
 
 |   True Labels |     0 |     1 |
@@ -174,7 +172,7 @@ The baseline model used is a **Logistic Regression Classifier** implemented with
 |             0 | 10417 |  3465 |
 |             1 |  3320 | 10562 |
 
-The results demonstrate the effectiveness of using gold difference at 25 minutes (golddiffat25) as a critical predictor for match outcomes. From the confusion matrix, the model accurately classifies a significant number of matches, with 10,417 True Negatives (correctly predicted losses) and 10,562 True Positives (correctly predicted wins). However, there are also 3,465 False Positives and 3,320 False Negatives, indicating areas for improvement in misclassification.
+
 
 
 
@@ -184,7 +182,11 @@ Grouped Statistics:
 |        0 |       -1511.96 |
 |        1 |        1511.96 |
 
- The grouped statistics further emphasize the strong correlation between gold difference and match results: losing teams average a gold difference of -1511.96, while winning teams average a positive difference of 1511.96. This substantial separation suggests that teams leading in gold at 25 minutes are significantly more likely to win. These findings validate the inclusion of golddiffat25 as a key feature in the predictive model, highlighting its importance in capturing the dynamics of match outcomes.
+**Gold Difference Impact**
+- Losing teams: -1,512 gold (avg)
+- Winning teams: +1,512 gold (avg)
+
+This clear separation confirms gold difference at 25 minutes as a strong predictor of match outcomes.
 
 ### Baseline Model Performance:
 
@@ -202,8 +204,8 @@ Both features are quantitative and continuous. Since there were no ordinal or no
 
 ## Model Performance
 
-The model was evaluated on a test set comprising 30% of the dataset to assess its generalization capability. The following metrics were observed:
-
+**Model Performance on Test Set (30% of data)**
+Model shows balanced performance across metrics and classes.
 
 Baseline Model Performance:
 Accuracy: 0.7556187869183115
@@ -224,38 +226,49 @@ weighted avg       0.76      0.76      0.76     27764
 - **Recall**: 75% (Class 0), 76% (Class 1)  
 - **F1 Score**: 75% (Class 0), 76% (Class 1)  
 
-These results indicate that the baseline model performs reasonably well for the task, achieving a balanced performance across both classes. The F1-score, in particular, highlights that the model maintains a good balance between precision and recall.
+
+**Model Quality Assessment**
+1. Features (`golddiffat25`, `xpdiffat25`) align with LoL game mechanics and are available at prediction time
+2. Balanced metrics across wins/losses with 75.56% accuracy
+3. Logistic regression provides clear feature importance interpretation
 
 
-## Is the Model “Good”?
-The current baseline model is "good" as an initial attempt because:
+**Model Limitations**
+- Misses complex feature interactions and nonlinear relationships
+- Only uses two features (gold/XP diff)
+- Logistic regression may oversimplify game dynamics
 
-1. **Domain Relevance**:  
-   The selected features, `golddiffat25` and `xpdiffat25`, are well-aligned with domain knowledge in League of Legends. These metrics are critical indicators of early-game dominance and are readily available at the 25-minute mark.
-
-2. **Balanced Performance**:  
-   The model performs consistently across both classes, as seen from the similar F1-scores for wins and losses. The accuracy of 75.56% is also a strong starting point for a baseline model.
-
-3. **Simplicity and Interpretability**:  
-   Logistic regression provides clear and interpretable results, making it easier to understand the impact of features on match outcomes.
-
-
-
-## Model Limitations
-While the baseline model provides a solid starting point, it has the following limitations:
-- It does not account for complex interactions or nonlinear relationships between features.
-- It uses only two features, which may oversimplify the problem. Adding more features (e.g., kills, deaths, or map objectives) could improve predictive performance.
-- Logistic regression may not capture the full complexity of match dynamics, so exploring more advanced models, such as Random Forests or Gradient Boosting, is a logical next step.
-
-## Next Steps
-To improve the model, additional features such as kill counts, deaths, and team objectives could be incorporated. Additionally, experimenting with more complex models and feature selection techniques could enhance performance further.
+**Improvements**
+- Add features: kills, deaths, objectives
+- Test advanced models: Random Forests, Gradient Boosting
+- Implement feature selection
 
 
 ### Final Model
 ## **Graph Analysis and Descriptions**
 
+**Model Parameters & Performance**
+- Best params: Random Forest with depth=10, 100 trees, sqrt features
+- Accuracy: 75.4%
+- Balanced precision/recall (~75%) across classes
 
-Best Parameters: {'model__class_weight': None, 'model__max_depth': 10, 'model__max_features': 'sqrt', 'model__min_samples_leaf': 4, 'model__min_samples_split': 2, 'model__n_estimators': 100}
+**Feature Engineering**
+1. K/D Ratio (kills/(deaths+1))
+   - Measures teamfight efficiency
+   - Captures survival impact on map pressure
+
+2. Gold-XP Interaction (gold×XP diff)
+   - Reflects compounding advantages
+   - Combines item and level power spikes
+
+**Feature Importance**
+1. Gold diff: 0.4628
+2. XP diff: 0.3777
+3. Kills: 0.1595
+4. Deaths: 0.0000
+
+Original features remain strongest predictors, suggesting engineered features may be redundant.
+
 Accuracy: 0.7539979829995678
 
 Classification Report:
@@ -268,15 +281,6 @@ Classification Report:
    macro avg       0.75      0.75      0.75     27764
 weighted avg       0.75      0.75      0.75     27764
 
-The two features I engineered were:
-
-1. Kills/Deaths Ratio (killsat25 / (deathsat25 + 1))
-This feature makes sense because it captures a team's efficiency in teamfights and skirmishes. A higher K/D ratio suggests that a team is not only securing kills but doing so while minimizing their own deaths, indicating superior positioning and teamfight execution. The ratio is more informative than raw kills or deaths because securing kills while staying alive allows a team to maintain map pressure and capitalize on their advantages. I added 1 to the denominator to handle cases with zero deaths while preserving the ratio's meaning.
-
-2. Gold-XP Interaction (golddiffat25 * xpdiffat25)
-This interaction term captures the compounding effect of having both a gold and experience advantage. In League of Legends, these advantages tend to amplify each other - a gold lead lets you buy better items, which helps secure more kills and objectives, leading to an XP advantage. Similarly, an XP lead gives you access to higher-level abilities, making it easier to secure gold through kills and objectives. A team ahead in both metrics is typically in a much stronger position than having just one advantage, because they have both better items AND higher-level abilities. Multiplying these differences captures this synergistic relationship.
-
-However, looking at my model's actual feature importance scores:
 ```
 golddiffat25: 0.4628
 xpdiffat25: 0.3777
@@ -284,7 +288,25 @@ killsat25: 0.1595
 deathsat25: 0.0000
 ```
 
-The baseline features (gold and XP difference) remained the most important predictors, suggesting that my engineered features may not have captured additional signal beyond what was already present in the original features. This could indicate that the raw gold and XP differences are already sufficient proxies for team advantages at 25 minutes, or that my feature engineering approach didn't effectively capture the underlying game dynamics I was targeting.
+**What went wrong**
+The original features likely dominate because:
+
+1. Gold/XP differences are comprehensive metrics that inherently capture kill/death performance
+   - Kills generate gold/XP
+   - Deaths result in lost farm time
+   - Original metrics already reflect teamfight outcomes
+
+2. Gold-XP interaction may be redundant since:
+   - These metrics naturally correlate
+   - The model can learn this relationship from individual features
+   - Linear combination might capture interaction better than multiplication
+
+3. K/D ratio provides less signal because:
+   - Raw numbers don't account for objective bounties
+   - Kill value varies (shutdown gold, assists)
+   - Deaths impact already reflected in resource differences
+
+This suggests early-game resource advantages are more predictive than how teams acquired them.
 
 ### Modeling Algorithm and Hyperparameters:
 
@@ -318,11 +340,13 @@ These hyperparameters were selected using **GridSearchCV** with 3-fold cross-val
    - Low minimum samples parameters allow the model to capture fine-grained patterns
    - 100 trees provide a good balance between model complexity and performance
 
-While the final model didn't improve raw accuracy, its more balanced approach to prediction and reliance on interpretable game metrics suggests it may be more reliable across different game scenarios.
+**Final Assessment**
+Though accuracy remained similar, final model offers:
+- More balanced predictions across different scenarios  
+- Better feature interpretability via gameplay metrics
+- Tuned hyperparameters balancing complexity/generalization
 
-### Conclusion:
-
-The final model builds on the baseline by incorporating features that are rooted in the mechanics of gameplay and are likely to influence match outcomes. The hyperparameter tuning process ensured a balance between model complexity and generalization. While the accuracy improvement is slight, the final model’s strength lies in its enhanced interpretability and its ability to leverage meaningful gameplay features, making it a more robust predictor of match outcomes.
+Makes it more reliable for practical game prediction despite minimal accuracy gains.
 
 ## **Graph 1: Baseline Feature Importance**
    <iframe
@@ -332,9 +356,7 @@ The final model builds on the baseline by incorporating features that are rooted
     frameborder="0"
     ></iframe>
 
-- **Description**: The graph compares model accuracies, showing the baseline model achieved 75.6% accuracy while the final model achieved 75.4% accuracy. The minimal difference (0.2%) suggests that adding additional features and complexity didn't significantly improve predictive performance. This could indicate that the simpler baseline model already captured the most important signals in the data.
-
-
+- **Description**: Both models performed similarly (75.6% vs 75.4% accuracy), suggesting added complexity provided no meaningful improvement over the baseline's key features.
 ---
 
 ## **Graph 2: Final Feature Importance**
@@ -347,17 +369,13 @@ The final model builds on the baseline by incorporating features that are rooted
     ></iframe>
 
 
-- **Description**: Feature Importance Analysis Graph
-This graph illustrates the relative importance of each feature in the Random Forest model:
+**Feature Importance**
+- Gold diff (25min): 0.46 
+- XP diff: 0.378
+- Kills: 0.159
+- Deaths: 0.000
 
-
-Gold difference at 25 minutes (golddiffat25) is the most important predictor with a score of 0.46
-XP difference (xpdiffat25) follows closely with 0.378
-Kills at 25 minutes (killsat25) has modest importance at 0.159
-Deaths at 25 minutes (deathsat25) shows no predictive value at 0.000
-
-This visualization reveals that resource-based metrics (gold and XP) are significantly more important for predicting game outcomes than combat statistics. The stark contrast between kills (moderately important) and deaths (no importance) is particularly interesting and suggests that securing advantages is more predictive than avoiding setbacks.
-
+Resource-based metrics (gold/XP) strongly outperform combat stats. Kills show moderate impact while deaths have no predictive value, suggesting advantage-gaining matters more than avoiding losses.
 ---
 
 ## **Graph 4: Comparison of Metrics by Class**
@@ -369,17 +387,12 @@ This visualization reveals that resource-based metrics (gold and XP) are signifi
   frameborder="0"
 ></iframe>
 - **Description**: 
-Model Performance Metrics by Class Graph
-This bar chart compares precision, recall, and F1-score across both classes (wins and losses):
+**Model Metrics by Class**
+- Losses: All metrics ~0.76
+- Wins: Precision 0.76, recall/F1 0.75
+- Balanced performance across classes (baseline 0.75)
 
-
-Class 0 (Losses): Shows balanced metrics with all three scores at approximately 0.76
-Class 1 (Wins): Similarly balanced with precision at 0.76 and slightly lower recall and F1-score at 0.75
-The red dashed line at 0.75 indicates a baseline performance level
-
-The consistent scores across both classes and metrics suggest that the model performs equally well at predicting both wins and losses, without significant bias toward either outcome. The proximity of all metrics to the 0.75-0.76 range indicates stable and balanced performance overall.
-
-
+Model shows no bias between predicting wins vs losses.
 ---
 
 ## **Graph 5: Confusion Matrices**
@@ -410,7 +423,7 @@ This balanced distribution suggests the model performs similarly well for both w
   height="600"
   frameborder="0"
 ></iframe>
-- **Description**: The ROC curve shows strong model performance with an AUC of 0.830, significantly better than random guessing (diagonal line). The curve's shape indicates good discrimination ability, with a sharp initial rise suggesting the model is particularly good at identifying the most confident predictions. The high AUC score validates that despite modest accuracy improvements, the model is making reliable probabilistic predictions.
+- **Description**: ROC curve shows strong prediction capability (AUC=0.830), well above random (0.5). Sharp initial rise indicates high confidence in strongest predictions.
 
 ---
 ## **Feature Engineering and Selection**
